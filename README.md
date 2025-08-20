@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TIWatcher Web (Sword & Shield)
 
 A minimal Flask web UI for monitoring Windows network connections against a local IOC list.
@@ -48,3 +49,7 @@ bad.example.com,domain
 - Add pagination and search to Alerts.
 - Enrich with WHOIS/GeoIP on alerts.
 - Export to CSV/JSON and webhook to Teams/Slack.
+=======
+# Threat-Intelligence-Watcher
+Python-based tool for monitoring active network connections on Windows hosts, detecting matches against known Indicators of Compromise (IOCs), and sending real-time alerts via Microsoft Teams.
+>>>>>>> 60e0ea06687d8eaba53aa52511e033dcdf092e28
