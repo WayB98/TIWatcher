@@ -1,0 +1,42 @@
+\
+{% extends "base.html" %}
+{% block content %}
+<h2>IOCs</h2>
+<div class="card">
+  <form method="post" style="display:grid; grid-template-columns: 1fr 200px 150px; gap:10px; align-items:center">
+    <input name="value" placeholder="1.2.3.4 or bad.example.com" />
+    <select name="ioc_type">
+      <option value="ip">IP</option>
+      <option value="domain">Domain</option>
+    </select>
+    <button class="btn" type="submit">Add IOC</button>
+  </form>
+  <form action="{{ url_for('upload_iocs') }}" method="post" enctype="multipart/form-data" style="margin-top:10px">
+    <input type="file" name="file" accept=".csv,text/csv" />
+    <button class="btn" type="submit">Bulk Upload CSV</button>
+    <span class="muted">Format: value[,type] per line</span>
+  </form>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <table>
+    <thead><tr><th>Value</th><th>Type</th><th>Enabled</th><th>Added</th><th>Actions</th></tr></thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td>{{ item.value }}</td>
+        <td>{{ item.ioc_type }}</td>
+        <td>{{ "✅" if item.enabled else "⏸️" }}</td>
+        <td class="muted">{{ item.created_at|dt }}</td>
+        <td>
+          <form class="inline" method="post" action="{{ url_for('toggle_ioc', ioc_id=item.id) }}"><button class="btn" type="submit">Toggle</button></form>
+          <form class="inline" method="post" action="{{ url_for('delete_ioc', ioc_id=item.id) }}" onsubmit="return confirm('Delete IOC?')"><button class="btn btn-danger" type="submit">Delete</button></form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" class="muted">No IOCs yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

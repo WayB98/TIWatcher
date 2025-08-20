@@ -1,0 +1,34 @@
+\
+{% extends "base.html" %}
+{% block content %}
+<h2>Alerts{% if qstatus %} – {{ qstatus|title }}{% endif %}</h2>
+<div style="margin-bottom:10px">
+  <a class="btn" href="{{ url_for('alerts') }}">All</a>
+  <a class="btn" href="{{ url_for('alerts', status='open') }}">Open</a>
+  <a class="btn" href="{{ url_for('alerts', status='closed') }}">Closed</a>
+</div>
+<div class="card">
+  <table>
+    <thead><tr><th>Time</th><th>Host</th><th>Remote</th><th>PID</th><th>IOC</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+      {% for a in items %}
+      <tr>
+        <td>{{ a.created_at|dt }}</td>
+        <td>{{ a.connection.host }}</td>
+        <td>{{ a.connection.raddr }}:{{ a.connection.rport }}</td>
+        <td>{{ a.connection.pid }}</td>
+        <td><span class="badge">{{ a.ioc.value }}</span> <small class="muted">({{ a.ioc.ioc_type }})</small></td>
+        <td>{{ a.status }}</td>
+        <td>
+          {% if a.status == "open" %}
+          <form class="inline" method="post" action="{{ url_for('close_alert', alert_id=a.id) }}"><button class="btn" type="submit">Close</button></form>
+          {% else %}—{% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7" class="muted">No alerts.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

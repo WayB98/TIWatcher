@@ -1,0 +1,31 @@
+\
+{% extends "base.html" %}
+{% block content %}
+<h2>Dashboard</h2>
+<div class="grid">
+  <div class="card"><div class="muted">IOCs</div><div style="font-size:2rem">{{ total_iocs }}</div></div>
+  <div class="card"><div class="muted">Connections</div><div style="font-size:2rem">{{ total_connections }}</div></div>
+  <div class="card"><div class="muted">Alerts (Open)</div><div style="font-size:2rem">{{ open_alerts }}</div></div>
+  <div class="card"><div class="muted">Alerts (Total)</div><div style="font-size:2rem">{{ total_alerts }}</div></div>
+</div>
+
+<h3 style="margin-top:24px">Recent Alerts</h3>
+<div class="card">
+  <table>
+    <thead><tr><th>Time</th><th>Host</th><th>Remote</th><th>IOC</th><th>Status</th></tr></thead>
+    <tbody>
+      {% for a in recent_alerts %}
+      <tr>
+        <td>{{ a.created_at|dt }}</td>
+        <td>{{ a.connection.host }}</td>
+        <td>{{ a.connection.raddr }}:{{ a.connection.rport }}</td>
+        <td><span class="badge">{{ a.ioc.value }}</span></td>
+        <td>{{ a.status }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" class="muted">No alerts yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
